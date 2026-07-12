@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Farm Ledger — 1.21 Survival Server</title>
+<meta name="description" content="A checklist of every farm to build on the server, organized by survival progression tier." />
+<style>
+  :root {
+    --bg: #f4f1e6;
+    --panel: #fffdf7;
+    --panel-border: #d8d0ba;
+    --panel-border-strong: #c2b898;
+    --ink: #221d14;
+    --ink-soft: #58513f;
+    --muted: #8a8269;
+    --ore: #a8701a;
+    --ore-glow: #c98b28;
+    --ore-tint: rgba(168, 112, 26, 0.12);
+    --redstone: #9c2f2f;
+    --lapis: #29509c;
+    --radius: 3px;
+    --shadow: 0 1px 2px rgba(34, 29, 20, 0.06);
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15171b;
+      --panel: #1c1f24;
+      --panel-border: #34383f;
+      --panel-border-strong: #454a52;
+      --ink: #e9e4d6;
+      --ink-soft: #b9b39f;
+      --muted: #7d8272;
+      --ore: #e0a640;
+      --ore-glow: #f0bc5e;
+      --ore-tint: rgba(224, 166, 64, 0.1);
+      --redstone: #d1503f;
+      --lapis: #6f9ce0;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15171b;
+    --panel: #1c1f24;
+    --panel-border: #34383f;
+    --panel-border-strong: #454a52;
+    --ink: #e9e4d6;
+    --ink-soft: #b9b39f;
+    --muted: #7d8272;
+    --ore: #e0a640;
+    --ore-glow: #f0bc5e;
+    --ore-tint: rgba(224, 166, 64, 0.1);
+    --redstone: #d1503f;
+    --lapis: #6f9ce0;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+  :root[data-theme="light"] {
+    --bg: #f4f1e6;
+    --panel: #fffdf7;
+    --panel-border: #d8d0ba;
+    --panel-border-strong: #c2b898;
+    --ink: #221d14;
+    --ink-soft: #58513f;
+    --muted: #8a8269;
+    --ore: #a8701a;
+    --ore-glow: #c98b28;
+    --ore-tint: rgba(168, 112, 26, 0.12);
+    --redstone: #9c2f2f;
+    --lapis: #29509c;
+    --shadow: 0 1px 2px rgba(34, 29, 20, 0.06);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(128,120,96,0.035) 0px, rgba(128,120,96,0.035) 1px, transparent 1px, transparent 3px);
+    color: var(--ink);
+    font-family: "Segoe UI", "Source Sans Pro", system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .fill { transition: width 0.45s ease; }
+    .box { transition: background 0.15s ease, border-color 0.15s ease; }
+    .box::after { transition: transform 0.15s ease, opacity 0.15s ease; }
+  }
+
+  /* ---------- Header ---------- */
+
+  .site-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding-bottom: 1.75rem;
+    margin-bottom: 2.25rem;
+    border-bottom: 2px solid var(--panel-border-strong);
+  }
+
+  .eyebrow {
+    font-family: "Consolas", "Cascadia Mono", "SFMono-Regular", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ore);
+  }
+
+  h1 {
+    font-family: "Rockwell", "Rockwell Nova", "Roboto Slab", Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    letter-spacing: 0.01em;
+    margin: 0.2rem 0 0;
+    text-wrap: balance;
+  }
+
+  .dek {
+    margin: 0;
+    max-width: 46ch;
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+  }
+
+  .overall {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: 0.4rem;
+  }
+
+  .overall .bar { flex: 1; }
+
+  .overall-count {
+    font-family: "Consolas", "Cascadia Mono", "SFMono-Regular", monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  .bar {
+    height: 8px;
+    background: var(--panel-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+  }
+  .bar .fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--ore) 0%, var(--ore-glow) 100%);
+    width: 0%;
+  }
+
+  /* ---------- Controls ---------- */
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filters {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .chip-btn {
+    font-family: "Consolas", "Cascadia Mono", "SFMono-Regular", monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--panel);
+    color: var(--ink-soft);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius);
+    padding: 0.4rem 0.7rem;
+    cursor: pointer;
+  }
+  .chip-btn:hover { border-color: var(--ore); color: var(--ink); }
+  .chip-btn.active {
+    background: var(--ore-tint);
+    border-color: var(--ore);
+    color: var(--ink);
+  }
+  .chip-btn:focus-visible, input:focus-visible + .box, .search:focus-visible {
+    outline: 2px solid var(--lapis);
+    outline-offset: 2px;
+  }
+
+  .search {
+    font-family: inherit;
+    font-size: 0.88rem;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius);
+    color: var(--ink);
+    padding: 0.45rem 0.7rem;
+    min-width: 11rem;
+    flex: 1 1 11rem;
+  }
+  .search::placeholder { color: var(--muted); }
+
+  /* ---------- Tiers ---------- */
+
+  .tier {
+    margin-bottom: 2.75rem;
+  }
+
+  .tier-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .tier-icon {
+    width: 26px;
+    height: 26px;
+    color: var(--ore);
+    flex-shrink: 0;
+  }
+  .tier-icon svg { width: 100%; height: 100%; }
+
+  .tier-titles h2 {
+    font-family: "Rockwell", "Rockwell Nova", "Roboto Slab", Georgia, serif;
+    font-size: 1.2rem;
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+  .tier-titles p {
+    margin: 0.15rem 0 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .tier-frac {
+    font-family: "Consolas", "Cascadia Mono", "SFMono-Regular", monospace;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tier .bar { margin-bottom: 0.9rem; }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.9rem;
+    align-items: start;
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--panel-border);
+    cursor: pointer;
+  }
+  .row:last-child { border-bottom: none; }
+  .row:hover { background: var(--ore-tint); }
+
+  .row input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+
+  .box {
+    position: relative;
+    width: 19px;
+    height: 19px;
+    margin-top: 0.15rem;
+    border: 1.5px solid var(--panel-border-strong);
+    border-radius: 2px;
+    background: var(--bg);
+    flex-shrink: 0;
+  }
+  .box::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0px;
+    width: 6px;
+    height: 11px;
+    border-right: 2px solid var(--bg);
+    border-bottom: 2px solid var(--bg);
+    transform: rotate(40deg) scale(0.6);
+    opacity: 0;
+  }
+  .row input:checked ~ .box {
+    background: var(--ore);
+    border-color: var(--ore);
+  }
+  .row input:checked ~ .box::after {
+    opacity: 1;
+    transform: rotate(40deg) scale(1);
+  }
+
+  .content h3 {
+    font-size: 0.98rem;
+    margin: 0 0 0.2rem;
+    font-weight: 600;
+  }
+  .row input:checked ~ .content h3 {
+    color: var(--muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--panel-border-strong);
+  }
+  .content p {
+    margin: 0;
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    max-width: 48ch;
+  }
+
+  .tags {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: flex-end;
+    flex-shrink: 0;
+    padding-top: 0.05rem;
+  }
+
+  .tag {
+    font-family: "Consolas", "Cascadia Mono", "SFMono-Regular", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .tag.loc {
+    color: var(--lapis);
+    border-color: color-mix(in srgb, var(--lapis) 40%, transparent);
+  }
+  .tag.diff-easy { color: var(--muted); border-color: var(--panel-border-strong); }
+  .tag.diff-medium { color: var(--ore); border-color: color-mix(in srgb, var(--ore) 45%, transparent); }
+  .tag.diff-hard, .tag.diff-expert { color: var(--redstone); border-color: color-mix(in srgb, var(--redstone) 45%, transparent); }
+
+  footer {
+    margin-top: 3rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--panel-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  footer p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--muted);
+    max-width: 42ch;
+  }
+  .reset-btn {
+    font-family: "Consolas", "Cascadia Mono", "SFMono-Regular", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid var(--panel-border-strong);
+    color: var(--ink-soft);
+    border-radius: var(--radius);
+    padding: 0.4rem 0.7rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .reset-btn:hover { border-color: var(--redstone); color: var(--redstone); }
+
+  .no-match {
+    padding: 1.2rem 1rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-align: center;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="site-header">
+    <div>
+      <div class="eyebrow">Survival Server &middot; Java 1.21</div>
+      <h1>The Farm Ledger</h1>
+      <p class="dek">Every farm worth building, in the order the world asks for it. Check one off when it's running back home.</p>
+    </div>
+    <div class="overall">
+      <div class="bar" role="progressbar" aria-label="Overall progress"><div class="fill" id="overallFill"></div></div>
+      <div class="overall-count" id="overallCount">0 / 0</div>
+    </div>
+    <div class="controls">
+      <div class="filters" role="group" aria-label="Filter farms">
+        <button class="chip-btn active" data-filter="all">All</button>
+        <button class="chip-btn" data-filter="unbuilt">Unbuilt</button>
+        <button class="chip-btn" data-filter="built">Built</button>
+      </div>
+      <input class="search" type="text" id="search" placeholder="Search a farm&hellip;" aria-label="Search farms" />
+    </div>
+  </header>
+
+  <main id="tiers"></main>
+
+  <div class="no-match" id="noMatch">Nothing matches that search.</div>
+
+  <footer>
+    <p>Progress is saved on this device only, in your browser's local storage.</p>
+    <button class="reset-btn" id="resetBtn">Reset progress</button>
+  </footer>
+</div>
+
+<script>
+  const ICONS = {
+    sprout: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 21V11"/><path d="M12 12c0-3.5-2.5-6-7-6 0 4.5 2.5 7 7 7"/><path d="M12 9c0-3 2-5 6-5 0 3.6-2 5.6-6 6"/></svg>',
+    wheat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 21V6"/><path d="M12 8l-3.2-2.4M12 8l3.2-2.4M12 12l-3.2-2.4M12 12l3.2-2.4M12 16l-3.2-2.4M12 16l3.2-2.4"/></svg>',
+    anvil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16l-2 3H10l-1.5 3H6L4 9Z"/><path d="M9 15h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2Z"/></svg>',
+    flame: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c4 0 6-2.7 6-6 0-2.5-1.3-4-2.4-5.6.2 2-.6 3-1.6 3.1.4-3-1-5.7-3.6-7.5.6 2.8-.4 4.6-2.1 6.4C6.9 12.9 6 14.4 6 16c0 3.2 2 5 6 5Z"/></svg>',
+    eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.8-6 10-6 10 6 10 6-3.8 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="2.6"/></svg>'
+  };
+
+  const TIERS = [
+    {
+      id: "foundations",
+      icon: "sprout",
+      title: "I. Foundations",
+      blurb: "What goes up before the first night.",
+      farms: [
+        ["cobble-gen", "Cobblestone generator", "Lava meets water for an infinite stone and cobble supply right at spawn.", "easy", "Overworld"],
+        ["tree-farm", "Automatic tree farm", "Dispenser-and-piston sapling farm so wood never means leaving base.", "easy", "Overworld"],
+        ["crop-farm", "Wheat / carrot / potato plot", "Water-irrigated crop rows, hand-harvested until the villager version comes online.", "easy", "Overworld"],
+        ["sugarcane", "Sugar cane farm", "Piston-and-observer auto-harvester feeding paper, books, and rockets.", "easy", "Overworld"],
+        ["composter", "Auto-bonemeal composter", "Routes crop surplus into a composter for a self-sustaining bonemeal loop.", "easy", "Overworld"]
+      ]
+    },
+    {
+      id: "early",
+      icon: "wheat",
+      title: "II. Early Survival",
+      blurb: "Hands-free food and the first real conveniences.",
+      farms: [
+        ["villager-crop", "Villager-worked crop farm", "Farmer villagers tend and restock the fields; hoppers collect the surplus.", "medium", "Overworld"],
+        ["chicken-cooker", "Self-cooking chicken farm", "Lava kills chickens and cooks them in one motion — food and feathers on tap.", "medium", "Overworld"],
+        ["sheep-pen", "Sheep shearing pen", "Dye-rotated pen for an infinite wool supply, no regrowth wait.", "easy", "Overworld"],
+        ["bee-farm", "Bee farm", "Honeycomb and honey bottles, plus a standing crop-growth boost nearby.", "medium", "Overworld"],
+        ["fuel-loop", "Kelp / bamboo fuel smelter", "Self-smelting fuel column that never needs restocking with coal.", "easy", "Overworld"]
+      ]
+    },
+    {
+      id: "mid",
+      icon: "anvil",
+      title: "III. Mid-Game Infrastructure",
+      blurb: "The farms that make everything after them faster.",
+      farms: [
+        ["iron-farm", "Iron farm", "Villager-and-golem loop for a steady iron supply — tools, hoppers, rails.", "medium", "Overworld"],
+        ["trading-hall", "Villager breeder + trading hall", "Bred and housed villagers for discounted enchantments and an emerald economy.", "medium", "Overworld"],
+        ["mob-grinder", "General mob XP grinder", "Dark-room spawning platform funneling hostiles to one kill point for levels and drops.", "medium", "Overworld"],
+        ["creeper-farm", "Creeper farm", "Dedicated creeper spawning space for a steady gunpowder supply.", "medium", "Overworld"],
+        ["guardian-farm", "Guardian farm", "Ocean monument drained or farmed in place for prismarine, sponges, and high XP.", "hard", "Ocean Monument"],
+        ["raid-farm", "Raid farm", "Bad-omen raid loop for totems of undying and emeralds.", "hard", "Overworld"]
+      ]
+    },
+    {
+      id: "late",
+      icon: "flame",
+      title: "IV. Late-Game & The Nether",
+      blurb: "Gearing up for brewing, beacons, and the hard content.",
+      farms: [
+        ["gold-farm", "Gold farm", "Nether-roof or portal-method zombified piglin farm for gold ingots at scale.", "hard", "Nether"],
+        ["blaze-farm", "Blaze farm", "Fortress spawner farm for blaze rods — brewing stands and eyes of ender.", "medium", "Nether"],
+        ["wither-skele", "Wither skeleton farm", "Coal and wither skulls on tap, enough to summon a wither for a beacon.", "hard", "Nether"],
+        ["nether-wart", "Nether wart farm", "Soul-sand plot keeping the brewing stand permanently stocked.", "easy", "Nether"],
+        ["piglin-barter", "Piglin bartering station", "Automated gold-ingot tosses for pearls, gravity gear, and Nether loot.", "easy", "Nether"],
+        ["debris-route", "Ancient debris route mapped", "No true farm exists — log a strip-mining route for netherite scrap instead.", "medium", "Nether"]
+      ]
+    },
+    {
+      id: "end",
+      icon: "eye",
+      title: "V. End-Game & The End",
+      blurb: "1.21-era finishers, once the overworld is spoken for.",
+      farms: [
+        ["pearl-farm", "Ender pearl farm", "Enderman farm for a standing pearl supply — no more manual endermen trading.", "hard", "The End"],
+        ["shulker-farm", "Shulker farm", "End-city shulker farm for shells to keep shulker boxes coming.", "expert", "The End"],
+        ["breeze-farm", "Trial chamber breeze farm", "Breeze rods and wind charges for mace upgrades and wind-burst gear.", "hard", "Trial Chambers"],
+        ["vault-farm", "Ominous trial vault loop", "Repeatable ominous-trial runs for trial-key loot and bottles o' enchanting.", "medium", "Trial Chambers"],
+        ["sculk-farm", "Deep dark sculk XP loop", "Careful sculk-catalyst farming that stays outside warden aggro range.", "expert", "Deep Dark"],
+        ["amethyst-farm", "Amethyst geode farm", "Budding amethyst block left to grow for an infinite shard supply.", "easy", "Overworld"]
+      ]
+    }
+  ];
+
+  const DIFF_LABEL = { easy: "Easy", medium: "Medium", hard: "Hard", expert: "Expert" };
+
+  const STORAGE_KEY = "farmLedgerChecked";
+  let checked = new Set();
+  try {
+    checked = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+  } catch (e) {}
+
+  const tiersEl = document.getElementById("tiers");
+
+  TIERS.forEach(tier => {
+    const section = document.createElement("section");
+    section.className = "tier";
+    section.id = "tier-" + tier.id;
+
+    const rows = tier.farms.map(([id, name, note, diff, loc]) => `
+      <label class="row" data-id="${id}" data-name="${name.toLowerCase()}">
+        <input type="checkbox" data-id="${id}" ${checked.has(id) ? "checked" : ""} />
+        <span class="box" aria-hidden="true"></span>
+        <div class="content">
+          <h3>${name}</h3>
+          <p>${note}</p>
+        </div>
+        <div class="tags">
+          <span class="tag diff-${diff}">${DIFF_LABEL[diff]}</span>
+          <span class="tag loc">${loc}</span>
+        </div>
+      </label>
+    `).join("");
+
+    section.innerHTML = `
+      <div class="tier-head">
+        <div class="tier-icon">${ICONS[tier.icon]}</div>
+        <div class="tier-titles">
+          <h2>${tier.title}</h2>
+          <p>${tier.blurb}</p>
+        </div>
+        <div class="tier-frac" id="frac-${tier.id}">0 / ${tier.farms.length}</div>
+      </div>
+      <div class="bar"><div class="fill" id="fill-${tier.id}"></div></div>
+      <div class="panel">${rows}</div>
+    `;
+    tiersEl.appendChild(section);
+  });
+
+  const allInputs = Array.from(document.querySelectorAll('.row input[type="checkbox"]'));
+  const allRows = Array.from(document.querySelectorAll(".row"));
+
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(checked)));
+  }
+
+  function updateProgress() {
+    let totalDone = 0, totalAll = 0;
+    TIERS.forEach(tier => {
+      const inputs = document.querySelectorAll(`#tier-${tier.id} input[type="checkbox"]`);
+      const done = Array.from(inputs).filter(i => i.checked).length;
+      const total = inputs.length;
+      totalDone += done;
+      totalAll += total;
+      document.getElementById(`fill-${tier.id}`).style.width = (total ? (done / total) * 100 : 0) + "%";
+      document.getElementById(`frac-${tier.id}`).textContent = `${done} / ${total}`;
+    });
+    document.getElementById("overallFill").style.width = (totalAll ? (totalDone / totalAll) * 100 : 0) + "%";
+    document.getElementById("overallCount").textContent = `${totalDone} / ${totalAll}`;
+  }
+
+  allInputs.forEach(input => {
+    input.addEventListener("change", () => {
+      if (input.checked) checked.add(input.dataset.id);
+      else checked.delete(input.dataset.id);
+      save();
+      updateProgress();
+      applyFilters();
+    });
+  });
+
+  let filterState = "all";
+  const filterBtns = document.querySelectorAll(".chip-btn");
+  filterBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      filterState = btn.dataset.filter;
+      applyFilters();
+    });
+  });
+
+  const searchInput = document.getElementById("search");
+  searchInput.addEventListener("input", applyFilters);
+
+  function applyFilters() {
+    const term = searchInput.value.trim().toLowerCase();
+    let anyVisible = false;
+    const tierVisibility = {};
+
+    allRows.forEach(row => {
+      const built = row.querySelector("input").checked;
+      const matchesFilter = filterState === "all" || (filterState === "built" && built) || (filterState === "unbuilt" && !built);
+      const matchesSearch = !term || row.dataset.name.includes(term);
+      const visible = matchesFilter && matchesSearch;
+      row.style.display = visible ? "" : "none";
+      if (visible) anyVisible = true;
+      const tierId = row.closest(".tier").id;
+      tierVisibility[tierId] = (tierVisibility[tierId] || 0) + (visible ? 1 : 0);
+    });
+
+    document.querySelectorAll(".tier").forEach(section => {
+      section.style.display = tierVisibility[section.id] ? "" : "none";
+    });
+
+    document.getElementById("noMatch").style.display = anyVisible ? "none" : "block";
+  }
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    if (!confirm("Clear all checked-off progress on this device?")) return;
+    checked = new Set();
+    save();
+    allInputs.forEach(i => (i.checked = false));
+    updateProgress();
+    applyFilters();
+  });
+
+  updateProgress();
+</script>
+</body>
+</html>
